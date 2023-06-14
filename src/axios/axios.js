@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://e7b8-77-238-209-2.ngrok-free.app/portal/api/currency",
+  baseURL: "http://192.168.113.57:8080/portal",
 });

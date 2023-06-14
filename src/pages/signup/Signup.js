@@ -6,7 +6,7 @@ import axios from "../../axios/axios";
 import "./Signup.css";
 
 export default function Signup() {
-  // fields to be filled with gett call
+  // fields to be filled with get call
   const [currenciesSelect, setCurrenciesSelect] = useState("");
   const [municipalitySelect, setMunicipalitySelect] = useState("");
   const [countrySelect, setCountrySelect] = useState("");
@@ -16,7 +16,7 @@ export default function Signup() {
   const [numericalWarning, setNumericalWarning] = useState(false);
 
   // fields to be sent with post call
-  const [bankNumber, setBankNumber] = useState("1346101004539095");
+  const [bankNumber, setBankNumber] = useState("");
   const [currency, setCurrency] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [street, setStreet] = useState("");
@@ -63,11 +63,10 @@ export default function Signup() {
   };
 
   const checkIfNumber = (e) => {
-    checkIfTransactionNumberIsValid();
     const regex = /^[0-9\b]+$/;
-    // if value is not blank, then test the regex
     if (e.target.value === "" || regex.test(e.target.value)) {
-      // setBankNumber(e.target.value);
+      setBankNumber(e.target.value);
+      checkIfTransactionNumberIsValid();
       setNumericalWarning(false);
     } else {
       setNumericalWarning(true);
@@ -77,12 +76,19 @@ export default function Signup() {
   const checkIfTransactionNumberIsValid = () => {
     if (bankNumber.length === 16) {
       const spliceNumber = bankNumber.split("");
-      const modulo = 97;
       const zeroes = ["0", "0"];
       spliceNumber.splice(-2, 2, ...zeroes);
       const transformedNumber = parseInt(spliceNumber.join(""));
-      const moduloRest = transformedNumber % modulo;
-      const lastNumber = modulo + 1 - moduloRest;
+      const moduloRest = transformedNumber % 97;
+      const lastNumbers = (97 + 1 - moduloRest).toString().split("");
+      spliceNumber.splice(-2, 2, ...lastNumbers);
+      console.log(bankNumber, spliceNumber.join(""));
+      if (bankNumber === spliceNumber.join("")) {
+        console.log("number OK");
+        return true;
+      }
+      console.log("False number");
+      return false;
     }
   };
 
@@ -99,13 +105,13 @@ export default function Signup() {
             />
             <div className="currency-select">
               <label htmlFor="currency">Valuta</label>
-              {currenciesSelect.products && (
+              {currenciesSelect && (
                 <select
                   onChange={(e) => setCurrency(e.target.value)}
                   id="currency"
                 >
-                  {currenciesSelect.products.map((item) => {
-                    return <option>{item.title}</option>;
+                  {currenciesSelect.map((item) => {
+                    return <option>{item}</option>;
                   })}
                 </select>
               )}
