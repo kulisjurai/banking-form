@@ -14,6 +14,8 @@ export default function Signup() {
   // recaptcha
   const [reCaptchaToken, setReCaptchaToken] = useState("");
   const [numericalWarning, setNumericalWarning] = useState(false);
+  const [transactionNumberWarning, setTransactionNumberWarning] =
+    useState(false);
 
   // fields to be sent with post call
   const [bankNumber, setBankNumber] = useState("");
@@ -33,17 +35,16 @@ export default function Signup() {
     getAll("/api/currency", setCurrenciesSelect);
     // getAll("/products", setMunicipality);
     // getAll("/products", setCountry);
-  }, []);
+    checkIfTransactionNumberIsValid();
+  }, [setBankNumber]);
 
   const getAll = async (path, setData) => {
     await axios
       .get(path)
       .then(function (response) {
-        // handle success
         setData(response.data);
       })
       .catch(function (error) {
-        // handle error
         console.log(error);
       })
       .finally(function () {
@@ -66,7 +67,6 @@ export default function Signup() {
     const regex = /^[0-9\b]+$/;
     if (e.target.value === "" || regex.test(e.target.value)) {
       setBankNumber(e.target.value);
-      checkIfTransactionNumberIsValid();
       setNumericalWarning(false);
     } else {
       setNumericalWarning(true);
@@ -81,25 +81,42 @@ export default function Signup() {
       const transformedNumber = parseInt(spliceNumber.join(""));
       const moduloRest = transformedNumber % 97;
       const lastNumbers = (97 + 1 - moduloRest).toString().split("");
+      if (lastNumbers.length === 1) {
+        lastNumbers.splice(0, 0, 0);
+      }
       spliceNumber.splice(-2, 2, ...lastNumbers);
       console.log(bankNumber, spliceNumber.join(""));
       if (bankNumber === spliceNumber.join("")) {
         console.log("number OK");
+        setTransactionNumberWarning(false);
         return true;
       }
-      console.log("False number");
+      setTransactionNumberWarning(true);
       return false;
     }
+  };
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (checkIfTransactionNumberIsValid()) {
+      console.log("form is submtted");
+      return;
+    }
+    console.log("form submission failed");
+    return;
   };
 
   return (
     <div>
       <Card>
         <div className="hr2"></div>
-        <form action="submit">
+        <form>
           <div className="bank-number-group">
             <input
-              onChange={(e) => checkIfNumber(e)}
+              onChange={(e) => {
+                checkIfTransactionNumberIsValid();
+                checkIfNumber(e);
+              }}
               type="text"
               placeholder="Broj bankovnog računa"
             />
@@ -121,6 +138,9 @@ export default function Signup() {
             <p className="number-warning">
               Ovo polje prima isključivo numeričku vrijednost
             </p>
+          )}
+          {transactionNumberWarning && (
+            <p className="number-warning">Transakcijski broj nije ispravan</p>
           )}
           <input
             onChange={(e) => setCompanyName(e.target.value)}
@@ -203,12 +223,14 @@ export default function Signup() {
               <span>Logujte se</span>
             </Link>
           </p>
-          <input
+          <button
             className="button"
-            type="submit"
             value="Register"
             disabled={tokenRecieved()}
-          />
+            onClick={(e) => submitForm(e)}
+          >
+            Register
+          </button>
         </form>
       </Card>
     </div>
