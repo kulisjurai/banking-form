@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "../../components/card/Card";
 import ReCAPTCHA from "react-google-recaptcha";
-import axios from "../../axios/axios";
+import { axiosInstance } from "../../axios/instance";
+import { checkIfTransactionNumberIsValid } from "../../shared/TransactionNumberCheck";
+import {
+  checkIfNumber,
+  checkIsPasswordIdentical,
+} from "../../shared/CheckInputs";
 import "./Signup.css";
 
 export default function Signup() {
@@ -11,11 +16,12 @@ export default function Signup() {
   const [municipalitySelect, setMunicipalitySelect] = useState("");
   const [countrySelect, setCountrySelect] = useState("");
 
-  // recaptcha
+  //
   const [reCaptchaToken, setReCaptchaToken] = useState("");
   const [numericalWarning, setNumericalWarning] = useState(false);
   const [transactionNumberWarning, setTransactionNumberWarning] =
     useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
 
   // fields to be sent with post call
   const [bankNumber, setBankNumber] = useState("");
@@ -32,74 +38,38 @@ export default function Signup() {
   const [retypePassword, setRetypePassword] = useState("");
 
   useEffect(() => {
-    getAll("/api/currency", setCurrenciesSelect);
-    // getAll("/products", setMunicipality);
-    // getAll("/products", setCountry);
-    checkIfTransactionNumberIsValid();
+    axiosInstance("GET", "/albums", setCurrenciesSelect);
+    // axiosInstance("GET", "/albums", setMunicipality);
+    // axiosInstance("GET", "/albums", setCountry);
   }, [setBankNumber]);
 
-  const getAll = async (path, setData) => {
-    await axios
-      .get(path)
-      .then(function (response) {
-        setData(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
-      });
-  };
   const onCaptchaChange = (value) => {
     setReCaptchaToken(value);
-  };
-
-  const checkIsPasswordIdentical = () => {
-    return password === retypePassword ? true : false;
   };
 
   const tokenRecieved = () => {
     return reCaptchaToken == "" ? true : false;
   };
 
-  const checkIfNumber = (e) => {
-    const regex = /^[0-9\b]+$/;
-    if (e.target.value === "" || regex.test(e.target.value)) {
-      setBankNumber(e.target.value);
-      setNumericalWarning(false);
-    } else {
-      setNumericalWarning(true);
-    }
-  };
-
-  const checkIfTransactionNumberIsValid = () => {
-    if (bankNumber.length === 16) {
-      const spliceNumber = bankNumber.split("");
-      const zeroes = ["0", "0"];
-      spliceNumber.splice(-2, 2, ...zeroes);
-      const transformedNumber = parseInt(spliceNumber.join(""));
-      const moduloRest = transformedNumber % 97;
-      const lastNumbers = (97 + 1 - moduloRest).toString().split("");
-      if (lastNumbers.length === 1) {
-        lastNumbers.splice(0, 0, 0);
-      }
-      spliceNumber.splice(-2, 2, ...lastNumbers);
-      console.log(bankNumber, spliceNumber.join(""));
-      if (bankNumber === spliceNumber.join("")) {
-        console.log("number OK");
-        setTransactionNumberWarning(false);
-        return true;
-      }
-      setTransactionNumberWarning(true);
-      return false;
-    }
-  };
-
   const submitForm = (e) => {
     e.preventDefault();
-    if (checkIfTransactionNumberIsValid()) {
+    if (
+      checkIfTransactionNumberIsValid(bankNumber, setTransactionNumberWarning)
+    ) {
       console.log("form is submtted");
+      axiosInstance("POST", "/albums", {
+        bankNumber,
+        currency,
+        companyName,
+        street,
+        city,
+        zipCode,
+        municipality,
+        country,
+        email,
+        username,
+        password,
+      });
       return;
     }
     console.log("form submission failed");
@@ -114,8 +84,7 @@ export default function Signup() {
           <div className="bank-number-group">
             <input
               onChange={(e) => {
-                checkIfTransactionNumberIsValid();
-                checkIfNumber(e);
+                checkIfNumber(e, setBankNumber, setNumericalWarning);
               }}
               type="text"
               placeholder="Broj bankovnog računa"
@@ -124,11 +93,12 @@ export default function Signup() {
               <label htmlFor="currency">Valuta</label>
               {currenciesSelect && (
                 <select
-                  onChange={(e) => setCurrency(e.target.value)}
+                  // onChange={(e) => setCurrency(e.target.value)}
                   id="currency"
                 >
                   {currenciesSelect.map((item) => {
-                    return <option>{item}</option>;
+                    console.log(item);
+                    return <option>{item.id}</option>;
                   })}
                 </select>
               )}
