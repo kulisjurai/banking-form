@@ -1,6 +1,6 @@
 import axios from "./axios";
 
-const axiosInstance = async (method, path, setData, data) => {
+export const axiosInstance = async (method, path, setData, data) => {
   if (typeof method === "string") {
     method = method.toLowerCase();
   }
@@ -12,5 +12,3 @@ const axiosInstance = async (method, path, setData, data) => {
       console.log(error);
     });
 };
-
-export { axiosInstance };

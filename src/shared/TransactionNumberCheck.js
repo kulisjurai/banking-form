@@ -1,4 +1,4 @@
-const checkIfTransactionNumberIsValid = (bankNumber, setWarning) => {
+export const checkIfTransactionNumberIsValid = (bankNumber, setWarning) => {
   if (bankNumber.length === 16) {
     const spliceNumber = bankNumber.split("");
     const zeroes = ["0", "0"];
@@ -18,5 +18,3 @@ const checkIfTransactionNumberIsValid = (bankNumber, setWarning) => {
     return false;
   }
 };
-
-export { checkIfTransactionNumberIsValid };
