@@ -19,14 +19,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  height: 100vh;
+  height: 110vh;
   width: 100vw;
   background: url("./assets/login-background.svg");
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   background-size: cover;
 }
 
 .App {
+  padding-top: 30px;
   height: 100vh;
   display: flex;
   justify-content: center;

@@ -1,12 +1,11 @@
 .card-view {
-  width: 500px;
   background-color: rgb(245, 244, 244);
   margin: auto;
   border-radius: 5px;
-  padding: 45px 65px;
+  padding: 40px 60px;
 }
 
 .logo {
   margin-bottom: 15px;
-  width: 400px;
+  width: 250px;
 }

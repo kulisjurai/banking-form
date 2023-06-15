@@ -5,7 +5,7 @@
 .hr {
   height: 1px !important;
   background-color: rgb(212, 212, 212);
-  margin: 20px 0 15px 0;
+  margin: 20px 0 10px 0;
 }
 
 .address {
@@ -19,7 +19,7 @@
 .hr2 {
   height: 1px !important;
   background-color: rgb(212, 212, 212);
-  margin: 5px 0 50px 0;
+  margin: 5px 0 30px 0;
 }
 
 input {
@@ -28,16 +28,18 @@ input {
   border-bottom: 1px solid rgb(212, 212, 212);
   width: 100%;
   height: 35px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 5;
 }
 
 select {
   background-color: rgb(245, 244, 244);
   border: none;
   height: 35px;
-
-  padding: 7px 20px;
+  padding: 7px 10px;
   border-radius: 4px;
+
   border: 1px solid rgb(212, 212, 212);
 }
 
@@ -82,7 +84,7 @@ label {
 
 .button {
   height: 45px;
-  margin: 25px 0px 20px 0px;
+  margin: 10px 0px 20px 0px;
   background-color: #476386;
   border: none;
   border-radius: 3px;
@@ -102,14 +104,76 @@ p {
 .captcha {
   width: 100%;
   display: flex;
+  margin-top: 5px;
   justify-content: center;
 }
 
-.number-warning {
-  font-size: 11px;
+.warning {
+  font-size: 10px;
   color: rgb(228, 93, 93);
   text-align: start;
   position: relative;
   height: 11px;
-  top: -20px;
+  margin: 0;
+  top: -40px;
+  transition: top 5s;
+  z-index: 0;
+}
+
+.active-warning {
+  font-size: 10px;
+  color: rgb(228, 93, 93);
+  text-align: start;
+  position: relative;
+  height: 11px;
+  margin: 0;
+  animation-duration: 0.5s;
+  animation-name: slidein;
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  -ms-animation-fill-mode: forwards;
+  -o-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  transition: top 5s;
+  display: block;
+}
+
+@keyframes slidein {
+  from {
+    top: -40px;
+  }
+
+  to {
+    top: -10px;
+  }
+}
+
+.deactive-warning {
+  font-size: 10px;
+  color: rgb(228, 93, 93);
+  text-align: start;
+  position: relative;
+  height: 11px;
+  margin: 0;
+  animation-duration: 0.5s;
+  animation-name: slideout;
+  transition: top 0.5s;
+  display: block;
+}
+
+@keyframes slideout {
+  from {
+    top: -10px;
+  }
+
+  to {
+    top: -40px;
+  }
+}
+
+.wrapper {
+  display: flex;
+}
+.first-gorup {
+  margin-right: 150px;
 }

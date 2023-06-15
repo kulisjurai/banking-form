@@ -17,4 +17,5 @@ export const checkIfTransactionNumberIsValid = (bankNumber, setWarning) => {
     setWarning(true);
     return false;
   }
+  return false;
 };
