@@ -31,14 +31,14 @@ export default function Signup() {
     useState(false);
 
   // fields to be sent with post call
-  const [bankNumber, setBankNumber] = useState("");
-  const [currency, setCurrency] = useState("");
+  const [bankAccountNumber, setbankAccountNumber] = useState("");
+  const [currencyIso4217Code, setcurrencyIso4217Code] = useState("EUR");
   const [companyName, setCompanyName] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [municipality, setMunicipality] = useState("");
-  const [country, setCountry] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [municipalityId, setMunicipalityId] = useState("1");
+  const [countryId, setCountryId] = useState("1");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -58,22 +58,22 @@ export default function Signup() {
     return reCaptchaToken === "" ? true : false;
   };
 
-  const fetchCountryRelatedMunicipalities = (name) => {
-    countrySelect.items.find((item) => {
-      if (item.name === name) {
-        axiosInstance(
-          "GET",
-          `/municipality?countryId=${item.id}`,
-          setMunicipalitySelect
-        );
-      }
-    });
+  const fetchCountryIdRelatedMunicipalities = (id) => {
+    axiosInstance(
+      "GET",
+      `/municipality?countryId=${id}`,
+      setMunicipalitySelect
+    );
   };
 
   const submitForm = (e) => {
     e.preventDefault();
-    const validityCollection = [
-      checkIfTransactionNumberIsValid(bankNumber, setTransactionNumberWarning),
+
+    const checkIfValid = [
+      checkIfTransactionNumberIsValid(
+        bankAccountNumber,
+        setTransactionNumberWarning
+      ),
       validateEmail(email, setEmailWarning),
       checkIfPasswordContainsSpecialCharacters(
         password,
@@ -84,27 +84,28 @@ export default function Signup() {
         retypePassword,
         setPasswordInequalityWarning
       ),
-    ];
-    const checkIfValid = validityCollection.map((item) => {
+    ].map((item) => {
       return item;
     });
     const isValid = !checkIfValid.includes(false);
     if (isValid) {
-      axiosInstance("POST", "/posts/add", setResponse, {
-        bankNumber,
-        currency,
+      console.log("post call successful");
+      axiosInstance("POST", "/token/request", setResponse, {
+        bankAccountNumber,
+        currencyIso4217Code,
         companyName,
         street,
         city,
-        zipCode,
-        municipality,
-        country,
+        postalCode,
+        municipalityId,
+        countryId,
         email,
         username,
         password,
       });
       return;
     }
+    console.log("post call failed");
     return;
   };
 
@@ -116,23 +117,22 @@ export default function Signup() {
           <div className="bank-number-group">
             <input
               onChange={(e) => {
-                checkIfNumber(e, setBankNumber, setNonNumericalWarning);
+                checkIfNumber(e, setbankAccountNumber, setNonNumericalWarning);
               }}
               type="text"
               placeholder="Broj bankovnog računa"
-              autocomplete="off"
             />
-            <div className="currency-select">
-              <label htmlFor="currency">Valuta</label>
+            <div className="currencyIso4217Code-select">
+              <label htmlFor="currencyIso4217Code">Valuta</label>
               {currenciesSelect && (
                 <select
                   onChange={(e) => {
-                    setCurrency(e.target.value);
+                    setcurrencyIso4217Code(e.target.value);
                   }}
-                  id="currency"
+                  id="currencyIso4217Code"
                 >
-                  {currenciesSelect.items.map((item) => {
-                    return <option>{item}</option>;
+                  {currenciesSelect.items.map((item, i) => {
+                    return <option key={i}>{item}</option>;
                   })}
                 </select>
               )}
@@ -175,23 +175,27 @@ export default function Signup() {
               placeholder="Grad*"
             />
             <input
-              onChange={(e) => setZipCode(e.target.value)}
+              onChange={(e) => setPostalCode(e.target.value)}
               type="text"
               placeholder="Poštanski broj*"
             />
           </div>
           <div className="select-group">
             <div className="select-group-inner">
-              <label htmFor="municipality">Općina</label>
+              <label htmlFor="municipality">Općina</label>
               {municipalitySelect && (
                 <select
                   onChange={(e) => {
-                    setMunicipality(e.target.value);
+                    setMunicipalityId(e.target.value);
                   }}
                   id="municipality"
                 >
-                  {municipalitySelect.items.map((item) => {
-                    return <option>{item.name}</option>;
+                  {municipalitySelect.items.map((item, i) => {
+                    return (
+                      <option value={item.id} key={i}>
+                        {item.name}
+                      </option>
+                    );
                   })}
                 </select>
               )}
@@ -201,13 +205,17 @@ export default function Signup() {
               {countrySelect && (
                 <select
                   onChange={(e) => {
-                    fetchCountryRelatedMunicipalities(e.target.value);
-                    setCountry(e.target.value);
+                    fetchCountryIdRelatedMunicipalities(e.target.value);
+                    setCountryId(e.target.value);
                   }}
                   id="country"
                 >
-                  {countrySelect.items.map((item) => {
-                    return <option>{item.name}</option>;
+                  {countrySelect.items.map((item, i) => {
+                    return (
+                      <option value={item.id} key={i}>
+                        {item.name}
+                      </option>
+                    );
                   })}
                 </select>
               )}

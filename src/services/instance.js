@@ -6,6 +6,7 @@ export const axiosInstance = async (method, path, setData, data) => {
   }
   await axios[method](path, data)
     .then(function (response) {
+      console.log(response);
       setData(response.data);
     })
     .catch(function (error) {

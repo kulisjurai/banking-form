@@ -65,16 +65,16 @@ label {
   color: rgb(102, 102, 102);
 }
 
-.currency-select {
+.currencyIso4217Code-select {
   display: flex;
   align-items: center;
 }
 
-.currency-select > label {
+.currencyIso4217Code-select > label {
   margin-left: 20px !important;
 }
 
-.currency-select > select {
+.currencyIso4217Code-select > select {
   margin-left: 15px !important;
 }
 
