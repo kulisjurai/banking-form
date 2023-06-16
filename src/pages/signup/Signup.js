@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "../../components/card/Card";
 import ReCAPTCHA from "react-google-recaptcha";
-import { axiosInstance } from "../../axios/instance";
+import { axiosInstance } from "../../services/instance";
 import { checkIfTransactionNumberIsValid } from "../../shared/TransactionNumberCheck";
 import {
   checkIfNumber,
@@ -55,11 +55,19 @@ export default function Signup() {
   };
 
   const tokenRecieved = () => {
-    return reCaptchaToken == "" ? true : false;
+    return reCaptchaToken === "" ? true : false;
   };
 
-  const fetchCountryRelatedMunicipalities = () => {
-    axiosInstance("GET", `/country/${country}`, setMunicipalitySelect);
+  const fetchCountryRelatedMunicipalities = (name) => {
+    countrySelect.items.find((item) => {
+      if (item.name === name) {
+        axiosInstance(
+          "GET",
+          `/municipality?countryId=${item.id}`,
+          setMunicipalitySelect
+        );
+      }
+    });
   };
 
   const submitForm = (e) => {
@@ -118,10 +126,12 @@ export default function Signup() {
               <label htmlFor="currency">Valuta</label>
               {currenciesSelect && (
                 <select
-                  onChange={(e) => setCurrency(e.target.value)}
+                  onChange={(e) => {
+                    setCurrency(e.target.value);
+                  }}
                   id="currency"
                 >
-                  {currenciesSelect.map((item) => {
+                  {currenciesSelect.items.map((item) => {
                     return <option>{item}</option>;
                   })}
                 </select>
@@ -180,8 +190,8 @@ export default function Signup() {
                   }}
                   id="municipality"
                 >
-                  {municipalitySelect.map((item) => {
-                    return <option>{item}</option>;
+                  {municipalitySelect.items.map((item) => {
+                    return <option>{item.name}</option>;
                   })}
                 </select>
               )}
@@ -191,13 +201,13 @@ export default function Signup() {
               {countrySelect && (
                 <select
                   onChange={(e) => {
+                    fetchCountryRelatedMunicipalities(e.target.value);
                     setCountry(e.target.value);
-                    fetchCountryRelatedMunicipalities();
                   }}
                   id="country"
                 >
-                  {countrySelect.map((item) => {
-                    return <option>{item}</option>;
+                  {countrySelect.items.map((item) => {
+                    return <option>{item.name}</option>;
                   })}
                 </select>
               )}

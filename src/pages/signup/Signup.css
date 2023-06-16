@@ -49,6 +49,10 @@ select {
   margin: 10px 0;
 }
 
+.select-group:first-child {
+  margin-right: 30px !important;
+}
+
 input:focus {
   outline: none;
 }
