@@ -19,6 +19,51 @@ const checkIfPasswordContainsSpecialCharacters = (password, setWarning) => {
   return false;
 };
 
+const checkCompanyName = (companyName, setWarning) => {
+  if (companyName !== "") {
+    setWarning(false);
+    return true;
+  }
+  setWarning(true);
+  return false;
+};
+
+const checkStreet = (street, setWarning) => {
+  if (street !== "") {
+    setWarning(false);
+    return true;
+  }
+  setWarning(true);
+  return false;
+};
+
+const checkCity = (city, setWarning) => {
+  if (city !== "") {
+    setWarning(false);
+    return true;
+  }
+  setWarning(true);
+  return false;
+};
+
+const checkZipCode = (zipCode, setWarning) => {
+  if (zipCode !== "") {
+    setWarning(false);
+    return true;
+  }
+  setWarning(true);
+  return false;
+};
+
+const checkUsername = (username, setWarning) => {
+  if (username !== "") {
+    setWarning(false);
+    return true;
+  }
+  setWarning(true);
+  return false;
+};
+
 const validateEmail = (email, setWarning) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (email === "" || regex.test(email)) {
@@ -40,7 +85,12 @@ const checkPasswordEquality = (password, retypePassword, setWarning) => {
 
 export {
   checkIfNumber,
-  checkPasswordEquality,
   checkIfPasswordContainsSpecialCharacters,
+  checkCompanyName,
+  checkStreet,
+  checkCity,
+  checkZipCode,
   validateEmail,
+  checkUsername,
+  checkPasswordEquality,
 };

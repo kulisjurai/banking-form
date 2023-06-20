@@ -6,9 +6,14 @@ import { axiosInstance } from "../../services/instance";
 import { checkIfTransactionNumberIsValid } from "../../shared/TransactionNumberCheck";
 import {
   checkIfNumber,
-  checkPasswordEquality,
   checkIfPasswordContainsSpecialCharacters,
+  checkCompanyName,
+  checkStreet,
+  checkCity,
+  checkZipCode,
   validateEmail,
+  checkUsername,
+  checkPasswordEquality,
 } from "../../shared/CheckInputs";
 import "./Signup.css";
 
@@ -27,6 +32,11 @@ export default function Signup() {
   const [emailWarning, setEmailWarning] = useState(false);
   const [passwordCharacterWarning, setPasswordCharacterWarning] =
     useState(false);
+  const [companyWarning, setCompanyWarning] = useState(false);
+  const [streetWarning, setStreetWarning] = useState(false);
+  const [cityWarning, setCityWarning] = useState(false);
+  const [zipCodeWarning, setZipCodeWarning] = useState(false);
+  const [usernameWarning, setUsernameWarning] = useState(false);
   const [passwordInequalityWarning, setPasswordInequalityWarning] =
     useState(false);
 
@@ -74,7 +84,12 @@ export default function Signup() {
         bankAccountNumber,
         setTransactionNumberWarning
       ),
+      checkCompanyName(companyName, setCompanyWarning),
+      checkStreet(street, setStreetWarning),
+      checkCity(city, setCityWarning),
+      checkZipCode(postalCode, setZipCodeWarning),
       validateEmail(email, setEmailWarning),
+      checkUsername(username, setUsernameWarning),
       checkIfPasswordContainsSpecialCharacters(
         password,
         setPasswordCharacterWarning
@@ -87,6 +102,7 @@ export default function Signup() {
     ].map((item) => {
       return item;
     });
+
     const isValid = !checkIfValid.includes(false);
     if (isValid) {
       console.log("post call successful");
@@ -157,28 +173,81 @@ export default function Signup() {
             </p>
           )}
           <input
-            onChange={(e) => setCompanyName(e.target.value)}
+            onChange={(e) => {
+              setCompanyName(e.target.value);
+              setCompanyWarning(companyName.length < 1 ? false : "");
+            }}
             type="text"
             className="placeholder"
             placeholder="Naziv kompanije*"
           />
+          {
+            <p
+              className={`warning ${
+                companyWarning ? "active-warning" : "deactive-warning"
+              }`}
+            >
+              Unos kompanije je obavezan
+            </p>
+          }
           <input
-            onChange={(e) => setStreet(e.target.value)}
+            onChange={(e) => {
+              setStreet(e.target.value);
+              setStreetWarning(street.length < 1 ? false : "");
+            }}
             type="text"
             placeholder="Ulica*"
           />
+          {
+            <p
+              className={`warning ${
+                streetWarning ? "active-warning" : "deactive-warning"
+              }`}
+            >
+              Unos ulice je obavezan
+            </p>
+          }
           <div className="address">
-            <input
-              onChange={(e) => setCity(e.target.value)}
-              type="text"
-              className="inner-address"
-              placeholder="Grad*"
-            />
-            <input
-              onChange={(e) => setPostalCode(e.target.value)}
-              type="text"
-              placeholder="Poštanski broj*"
-            />
+            <div className="inner-address">
+              {" "}
+              <input
+                onChange={(e) => {
+                  setCity(e.target.value);
+                  setCityWarning(city.length < 1 ? false : "");
+                }}
+                type="text"
+                placeholder="Grad*"
+              />
+              {
+                <p
+                  className={`warning ${
+                    cityWarning ? "active-warning" : "deactive-warning"
+                  }`}
+                >
+                  Unos grada je obavezan
+                </p>
+              }
+            </div>
+            <div>
+              {" "}
+              <input
+                onChange={(e) => {
+                  setPostalCode(e.target.value);
+                  setZipCodeWarning(postalCode.length < 1 ? false : "");
+                }}
+                type="text"
+                placeholder="Poštanski broj*"
+              />
+              {
+                <p
+                  className={`warning ${
+                    zipCodeWarning ? "active-warning" : "deactive-warning"
+                  }`}
+                >
+                  Unos poštanskog broja je obavezan
+                </p>
+              }
+            </div>
           </div>
           <div className="select-group">
             <div className="select-group-inner">
@@ -241,10 +310,22 @@ export default function Signup() {
               </p>
             }
             <input
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                setUsernameWarning(username.length < 1 ? false : "");
+              }}
               type="text"
               placeholder="Korisničko ime"
             />
+            {
+              <p
+                className={`warning ${
+                  usernameWarning ? "active-warning" : "deactive-warning"
+                }`}
+              >
+                Unos korisničkog imena je obavezan
+              </p>
+            }
             <input
               onChange={(e) => {
                 setPassword(e.target.value);
