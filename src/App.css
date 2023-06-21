@@ -2,11 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
 body {
   margin: 0;
   padding: 0;
@@ -19,11 +14,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  height: 110vh;
+  /* height: 110vh; */
   width: 100vw;
-  background: url("./assets/login-background.svg");
+  /* background: url("./assets/login-background.svg"); */
   background-repeat: repeat-y;
-  background-size: cover;
 }
 
 .App {

@@ -12,12 +12,8 @@ export default function Login() {
         <form onSubmit={login}>
           <div className="hr"></div>
           <div>
-            <input type="email" placeholder="Email" autocomplete="off" />
-            <input
-              type="password"
-              placeholder="Korisničko ime"
-              autocomplete="off"
-            />
+            <input type="email" placeholder="Email" />
+            <input type="password" placeholder="Korisničko ime" />
           </div>
           <p>
             Nemate korsnički račun?{" "}

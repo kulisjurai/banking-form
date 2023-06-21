@@ -2,6 +2,33 @@
   display: flex;
 }
 
+.bank-number-group-mobile {
+  display: flex;
+  flex-direction: column;
+}
+
+.bank-number-group-mobile > .currencyIso4217Code-select > select {
+  margin: 20px 0;
+  width: 100% !important;
+}
+
+.bank-number-group-mobile > .currencyIso4217Code-select > label {
+  margin-left: 0px !important;
+}
+
+.select-group-mobile > .select-group-inner > select {
+  width: 100% !important;
+}
+
+.select-group-mobile > .select-group-inner {
+  margin: 10px 0;
+}
+
+.address-mobile > .inner-address,
+.inner-address2 {
+  width: 100% !important;
+}
+
 .hr {
   height: 1px !important;
   background-color: rgb(212, 212, 212);
@@ -13,9 +40,16 @@
   justify-content: space-between;
 }
 
+.address-m {
+  display: flex;
+  flex-direction: column;
+}
+
 .inner-address {
   width: 50%;
-  margin-right: 5px !important;
+}
+.inner-address2 {
+  width: 45%;
 }
 
 .hr2 {
@@ -41,18 +75,22 @@ select {
   height: 35px;
   padding: 7px 10px;
   border-radius: 4px;
-
   border: 1px solid rgb(212, 212, 212);
 }
 
 .select-group {
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
+  margin: 0px 0;
+}
+
+.select-group-mobile {
+  display: flex;
+  flex-direction: column;
 }
 
 .select-group:first-child {
-  margin-right: 30px !important;
+  margin-right: 0px !important;
 }
 
 input:focus {
@@ -124,6 +162,10 @@ p {
   top: -40px;
   transition: top 5s;
   z-index: 0;
+}
+
+.mobile-padding {
+  padding-top: 250px;
 }
 
 .active-warning {

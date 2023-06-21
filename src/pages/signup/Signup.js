@@ -23,6 +23,7 @@ export default function Signup() {
   const [municipalitySelect, setMunicipalitySelect] = useState("");
   const [countrySelect, setCountrySelect] = useState("");
   const [response, setResponse] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
 
   //
   const [reCaptchaToken, setReCaptchaToken] = useState("");
@@ -58,7 +59,16 @@ export default function Signup() {
     axiosInstance("GET", "/currency", setCurrenciesSelect);
     axiosInstance("GET", "/municipality", setMunicipalitySelect);
     axiosInstance("GET", "/country", setCountrySelect);
-  }, []);
+    const isMobileViewActive = () => {
+      console.log(window.innerWidth);
+      if (window.innerWidth < 760) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+    isMobileViewActive();
+  }, [isMobile]);
 
   const onCaptchaChange = (value) => {
     setReCaptchaToken(value);
@@ -126,11 +136,15 @@ export default function Signup() {
   };
 
   return (
-    <div>
+    <div className={isMobile ? "mobile-padding" : ""}>
       <Card>
         <div className="hr2"></div>
         <form>
-          <div className="bank-number-group">
+          <div
+            className={
+              isMobile ? "bank-number-group-mobile" : "bank-number-group"
+            }
+          >
             <input
               onChange={(e) => {
                 checkIfNumber(e, setbankAccountNumber, setNonNumericalWarning);
@@ -154,16 +168,18 @@ export default function Signup() {
               )}
             </div>
           </div>
-          {
+          {!isMobile && (
             <p
-              className={`warning ${
-                nonNumericalWarning ? "active-warning" : "deactive-warning"
+              className={`warning additional ${
+                nonNumericalWarning
+                  ? "active-warning additional"
+                  : "deactive-warning"
               }`}
             >
               Ovo polje prima isključivo numeričku vrijednost
             </p>
-          }
-          {transactionNumberWarning && (
+          )}
+          {transactionNumberWarning && !isMobile && (
             <p
               className={`warning ${
                 transactionNumberWarning ? "active-warning" : "deactive-warning"
@@ -181,7 +197,7 @@ export default function Signup() {
             className="placeholder"
             placeholder="Naziv kompanije*"
           />
-          {
+          {!isMobile && (
             <p
               className={`warning ${
                 companyWarning ? "active-warning" : "deactive-warning"
@@ -189,7 +205,7 @@ export default function Signup() {
             >
               Unos kompanije je obavezan
             </p>
-          }
+          )}
           <input
             onChange={(e) => {
               setStreet(e.target.value);
@@ -198,7 +214,7 @@ export default function Signup() {
             type="text"
             placeholder="Ulica*"
           />
-          {
+          {!isMobile && (
             <p
               className={`warning ${
                 streetWarning ? "active-warning" : "deactive-warning"
@@ -206,8 +222,8 @@ export default function Signup() {
             >
               Unos ulice je obavezan
             </p>
-          }
-          <div className="address">
+          )}
+          <div className={isMobile ? "address-mobile" : "address"}>
             <div className="inner-address">
               {" "}
               <input
@@ -218,7 +234,7 @@ export default function Signup() {
                 type="text"
                 placeholder="Grad*"
               />
-              {
+              {!isMobile && (
                 <p
                   className={`warning ${
                     cityWarning ? "active-warning" : "deactive-warning"
@@ -226,9 +242,9 @@ export default function Signup() {
                 >
                   Unos grada je obavezan
                 </p>
-              }
+              )}
             </div>
-            <div>
+            <div className="inner-address2">
               {" "}
               <input
                 onChange={(e) => {
@@ -238,7 +254,7 @@ export default function Signup() {
                 type="text"
                 placeholder="Poštanski broj*"
               />
-              {
+              {!isMobile && (
                 <p
                   className={`warning ${
                     zipCodeWarning ? "active-warning" : "deactive-warning"
@@ -246,10 +262,10 @@ export default function Signup() {
                 >
                   Unos poštanskog broja je obavezan
                 </p>
-              }
+              )}
             </div>
           </div>
-          <div className="select-group">
+          <div className={isMobile ? "select-group-mobile" : "select-group"}>
             <div className="select-group-inner">
               <label htmlFor="municipality">Općina</label>
               {municipalitySelect && (
@@ -300,7 +316,7 @@ export default function Signup() {
               type="email"
               placeholder="Email"
             />
-            {
+            {!isMobile && (
               <p
                 className={`warning ${
                   emailWarning ? "active-warning" : "deactive-warning"
@@ -308,7 +324,7 @@ export default function Signup() {
               >
                 Unos email adrese nije valjan
               </p>
-            }
+            )}
             <input
               onChange={(e) => {
                 setUsername(e.target.value);
@@ -317,7 +333,7 @@ export default function Signup() {
               type="text"
               placeholder="Korisničko ime"
             />
-            {
+            {!isMobile && (
               <p
                 className={`warning ${
                   usernameWarning ? "active-warning" : "deactive-warning"
@@ -325,7 +341,7 @@ export default function Signup() {
               >
                 Unos korisničkog imena je obavezan
               </p>
-            }
+            )}
             <input
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -335,7 +351,7 @@ export default function Signup() {
               type="password"
               placeholder="Šifra"
             />
-            {
+            {!isMobile && (
               <p
                 className={`warning ${
                   passwordCharacterWarning
@@ -346,13 +362,13 @@ export default function Signup() {
                 Lozinka treba sadržavati minimalno 8 karaktera, uključujući
                 velika i mala slova, specijalne karaktere i brojeve
               </p>
-            }
+            )}
             <input
               onChange={(e) => setRetypePassword(e.target.value)}
               type="password"
               placeholder="Ponovite šifru"
             />
-            {
+            {!isMobile && (
               <p
                 className={`warning extend ${
                   passwordInequalityWarning
@@ -362,7 +378,7 @@ export default function Signup() {
               >
                 Lozinke se ne podudaraju
               </p>
-            }
+            )}
           </div>
           <div className="captcha">
             <ReCAPTCHA
