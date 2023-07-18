@@ -10,10 +10,11 @@ export default function Login() {
     <div>
       <Card>
         <form onSubmit={login}>
-          <div className="hr"></div>
+          <div className="hr1"></div>
+
           <div>
             <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Korisničko ime" />
+            <input type="password" placeholder="Lozinka" />
           </div>
           <p>
             Nemate korsnički račun?{" "}

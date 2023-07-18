@@ -1,0 +1,13 @@
+.message {
+  width: 500px;
+  text-align: start;
+}
+
+hr {
+  height: 0.2px !important;
+  color: rgb(243, 243, 243);
+}
+
+.message > p {
+  font-size: 17px;
+}

@@ -56,19 +56,24 @@ export default function Signup() {
   const [retypePassword, setRetypePassword] = useState("");
 
   useEffect(() => {
-    axiosInstance("GET", "/currency", setCurrenciesSelect);
-    axiosInstance("GET", "/municipality", setMunicipalitySelect);
-    axiosInstance("GET", "/country", setCountrySelect);
-    const isMobileViewActive = () => {
-      console.log(window.innerWidth);
-      if (window.innerWidth < 760) {
-        setIsMobile(true);
-      } else {
-        setIsMobile(false);
-      }
-    };
+    if (!response.hasOwnProperty("key")) {
+      axiosInstance("GET", "/currency", setCurrenciesSelect);
+      axiosInstance("GET", "/municipality", setMunicipalitySelect);
+      axiosInstance("GET", "/country", setCountrySelect);
+    }
+    if (response.status >= 200 && response.status <= 300) {
+      window.location.replace("/message");
+    }
     isMobileViewActive();
-  }, [isMobile]);
+  }, [isMobile, response]);
+
+  const isMobileViewActive = () => {
+    if (window.innerWidth < 760) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
 
   const onCaptchaChange = (value) => {
     setReCaptchaToken(value);
@@ -86,7 +91,7 @@ export default function Signup() {
     );
   };
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
 
     const checkIfValid = [
@@ -116,7 +121,7 @@ export default function Signup() {
     const isValid = !checkIfValid.includes(false);
     if (isValid) {
       console.log("post call successful");
-      axiosInstance("POST", "/token/request", setResponse, {
+      await axiosInstance("POST", "/token/request", setResponse, {
         bankAccountNumber,
         currencyIso4217Code,
         companyName,

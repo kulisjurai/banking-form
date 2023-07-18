@@ -14,10 +14,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* height: 110vh; */
-  width: 100vw;
-  /* background: url("./assets/login-background.svg"); */
-  background-repeat: repeat-y;
+  height: 110vh;
+  width: 100%;
+  /* background: url("./assets/login-background.svg");
+  background-size: cover; */
+  background: #ebebeb;
 }
 
 .App {

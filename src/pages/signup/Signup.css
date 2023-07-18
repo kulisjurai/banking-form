@@ -46,15 +46,13 @@
 }
 
 .inner-address {
-  width: 50%;
-}
-.inner-address2 {
-  width: 45%;
+  width: 110%;
+  margin-right: 20px;
 }
 
 .hr2 {
   height: 1px !important;
-  background-color: rgb(212, 212, 212);
+  background-color: transparent;
   margin: 5px 0 30px 0;
 }
 

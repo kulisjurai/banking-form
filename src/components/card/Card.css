@@ -1,12 +1,26 @@
 .card-view {
-  background-color: rgb(245, 244, 244);
+  /* background-color: rgb(245, 244, 244); */
   margin: auto;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   padding: 40px 60px;
+  border-radius: 9px;
+  background: #f6f5f4;
+  box-shadow: 5px 5px 10px #d1d0cf, -5px -5px 10px#d1d0cf;
 }
 
 .logo {
-  margin-bottom: 15px;
+  margin-bottom: 0px;
   width: 250px;
-  height: 100px;
+  height: 60px;
+}
+
+.forspace-logo {
+  position: relative;
+  top: 5px;
+  left: 5px;
+  height: 15px;
+}
+
+.trademark-wrapper {
+  font-size: 12px;
 }

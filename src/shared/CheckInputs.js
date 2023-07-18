@@ -10,8 +10,8 @@ const checkIfNumber = (e, setNumber, setWarning) => {
 
 const checkIfPasswordContainsSpecialCharacters = (password, setWarning) => {
   const regex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  if (password === "" || regex.test(password)) {
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()_+\-=[\]{}|;':",./<>?]{8,20}$/;
+  if (password !== "" || regex.test(password)) {
     setWarning(false);
     return true;
   }
@@ -66,7 +66,7 @@ const checkUsername = (username, setWarning) => {
 
 const validateEmail = (email, setWarning) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (email === "" || regex.test(email)) {
+  if (email !== "" || regex.test(email)) {
     setWarning(false);
     return true;
   }
